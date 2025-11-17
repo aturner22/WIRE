@@ -1,21 +1,21 @@
-# WIRE
+# WIRE: Weather-Induced Risk Exposure
 
 Weather-based hazard assessment system for care institutions.
 
 ## Overview
 
-WIRE transforms meteorological data into risk assessments for institutions caring for vulnerable populations. The system monitors eight weather-related hazards with thresholds calibrated for elderly, children, and medically vulnerable individuals.
+WIRE transforms meteorological data into risk assessments for institutions with a duty of care. The modular system monitors eight weather-related hazards with thresholds calibrated for elderly, children, and medically vulnerable individuals.
 
-Each hazard calculation is based on peer-reviewed academic research with full citations and DOI links provided.
+Each hazard calculation is based on cited academic research.
 
 ## Features
 
 - Real-time and 5-day forecast hazard monitoring
 - Eight comprehensive hazard assessments with 1-5 risk scoring
-- Academic methodology with full citations for transparency
+- Academic methodology with citations
 - Risk thresholds calibrated for vulnerable populations
 - Global coverage via OpenWeather API
-- Clean, professional interface suitable for institutional use
+- Clean, professional interface
 
 ## Hazard Modules
 
@@ -61,7 +61,6 @@ Assesses transport safety from visibility, precipitation, and wind conditions.
 **Frontend:**
 - Next.js 14 with TypeScript
 - Tailwind CSS
-- Lucide React icons
 
 ## Installation
 
@@ -86,15 +85,14 @@ cp .env.example .env
 
 3. Install backend dependencies:
 ```bash
-cd backend
 uv venv
-source ../.venv/bin/activate  # Windows: ..\.venv\Scripts\activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 uv sync
 ```
 
 4. Install frontend dependencies:
 ```bash
-cd ../frontend
+cd frontend
 npm install
 ```
 
@@ -130,13 +128,12 @@ Access the application:
 │   │   │   └── hazards/             # Hazard modules
 │   │   ├── schemas/                 # Pydantic models
 │   │   └── main.py                  # FastAPI application
-│   └── requirements.txt
 ├── frontend/
 │   ├── app/
 │   │   ├── page.tsx                 # Landing page
 │   │   ├── dashboard/               # Dashboard view
 │   │   ├── forecast/                # Forecast view
-│   │   └── methodology/             # Academic citations
+│   │   └── methodology/             # Citations
 │   ├── lib/
 │   │   └── api.ts                   # API client
 │   └── package.json
@@ -174,7 +171,7 @@ curl "http://localhost:8000/api/v1/hazards?lat=51.5074&lon=-0.1278&name=London"
 
 ## Environment Variables
 
-Required environment variables in `.env`:
+Environment variables in `.env`:
 
 ```bash
 # Required
@@ -185,8 +182,6 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ## Deployment
-
-The application can be deployed with the backend on Railway or similar Python hosting, and the frontend on Vercel or similar Node.js hosting.
 
 Ensure `OPENWEATHER_API_KEY` is set in backend environment variables, and `NEXT_PUBLIC_API_URL` points to the deployed backend URL in frontend environment variables.
 
