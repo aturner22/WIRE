@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # Security
     SECRET_KEY: str = "your-secret-key-change-in-production"
 
-    # CORS - Allow all origins in production, or specific origins in development
+    # CORS - Allow vercel origins in production, or specific origins in development
     CORS_ORIGINS: list[str] = ["https://wire-delta.vercel.app"] if os.getenv("ENVIRONMENT") == "production" else [
         "http://localhost:3000",
         "http://localhost:3001"
