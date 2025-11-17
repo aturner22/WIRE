@@ -24,6 +24,19 @@ export default function ForecastPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isSearching, setIsSearching] = useState(false)
+  const [hiddenHazards, setHiddenHazards] = useState<Set<string>>(new Set())
+
+  const toggleHazard = (hazardType: string) => {
+    setHiddenHazards(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(hazardType)) {
+        newSet.delete(hazardType)
+      } else {
+        newSet.add(hazardType)
+      }
+      return newSet
+    })
+  }
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return
@@ -203,41 +216,100 @@ export default function ForecastPage() {
 
         {!loading && forecastData && (
           <div className="max-w-7xl mx-auto">
+            {/* Daily Peak Hazards */}
             <div className="mb-12">
-              <h3 className="text-3xl font-semibold text-navy mb-8">Daily Overview</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-3xl font-semibold text-navy">Daily Peak Hazards</h3>
+                <div className="text-sm text-gray-500 italic">Hover over any day to see all hazards</div>
+              </div>
+              <div className="flex gap-3 w-full">
                 {dailyForecasts.map(({ date, points, hazardMaxRisks, overallMaxRisk }) => {
                   const dateObj = new Date(date)
                   const dayName = dateObj.toLocaleDateString("en-US", { weekday: "short" })
                   const dateStr = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+
+                  // Sort all hazards by risk score
+                  const allHazards = Object.entries(hazardMaxRisks)
+                    .sort(([, a], [, b]) => (b as number) - (a as number))
+
+                  const topHazards = allHazards.slice(0, 3)
+
                   return (
-                    <div key={date} className="bg-white border-2 border-gray-100 p-6 hover:shadow-lg transition-all">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <div className="font-semibold text-xl text-navy">{dayName}</div>
-                          <div className="text-sm text-gray-600">{dateStr}</div>
+                    <div key={date} className="group relative flex-1">
+                      <div className={`bg-white border-2 ${getRiskColor(overallMaxRisk)} p-3 cursor-pointer transition-all hover:shadow-lg h-full`}>
+                        <div className="text-center mb-2">
+                          <div className="font-bold text-sm text-navy mb-1">{dayName}</div>
+                          <div className="text-xs text-gray-600 mb-1.5">{dateStr}</div>
+                          <div className={`text-3xl font-bold bg-gradient-to-br ${getRiskBgColor(overallMaxRisk)} bg-clip-text text-transparent mb-2`}>
+                            {overallMaxRisk}
+                          </div>
                         </div>
-                        <div className={`text-4xl font-bold bg-gradient-to-br ${getRiskBgColor(overallMaxRisk)} bg-clip-text text-transparent`}>
-                          {overallMaxRisk}
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 mt-4">
-                        {Object.entries(hazardMaxRisks).map(([hazardType, maxScore]) => {
-                          const IconComponent = getHazardIconComponent(hazardType)
-                          return (
-                            <div key={hazardType} className={`p-2 border-2 ${getRiskColor(maxScore)} bg-white`}>
-                              <div className="flex items-center justify-between">
-                                <div className="w-6 h-6 rounded bg-navy/5 flex items-center justify-center">
-                                  <IconComponent className="h-4 w-4 text-navy-light" strokeWidth={1.5} />
-                                </div>
-                                <span className={`text-lg font-bold bg-gradient-to-br ${getRiskBgColor(maxScore)} bg-clip-text text-transparent`}>
+
+                        {/* Top 3 hazards preview */}
+                        <div className="space-y-2 border-t border-gray-200 pt-2.5">
+                          {topHazards.map(([hazardType, maxScore]) => {
+                            const IconComponent = getHazardIconComponent(hazardType)
+                            return (
+                              <div key={hazardType} className="flex items-center gap-2">
+                                <IconComponent className={`h-3.5 w-3.5 flex-shrink-0 ${
+                                  maxScore >= 4 ? 'text-red-600' :
+                                  maxScore === 3 ? 'text-amber-600' :
+                                  maxScore === 2 ? 'text-yellow-600' :
+                                  'text-green-600'
+                                }`} strokeWidth={1.5} />
+                                <span className="text-[11px] font-medium text-navy truncate flex-1 leading-tight">
+                                  {getHazardName(hazardType)}
+                                </span>
+                                <span className={`text-sm font-bold flex-shrink-0 ${
+                                  maxScore >= 4 ? 'text-red-600' :
+                                  maxScore === 3 ? 'text-amber-600' :
+                                  maxScore === 2 ? 'text-yellow-600' :
+                                  'text-green-600'
+                                }`}>
                                   {maxScore}
                                 </span>
                               </div>
-                              <div className="text-xs font-medium text-navy mt-1">{getHazardName(hazardType)}</div>
-                            </div>
-                          )
-                        })}
+                            )
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Expandable detail panel - hover to see all 8 */}
+                      <div className="absolute top-full left-0 mt-2 w-64 bg-white border-2 border-gray-200 shadow-xl rounded-lg p-4 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                        <div className="font-bold text-navy mb-3 pb-2 border-b border-gray-200">
+                          {dayName}, {dateStr}
+                        </div>
+                        <div className="space-y-2">
+                          {allHazards.map(([hazardType, maxScore]) => {
+                            const IconComponent = getHazardIconComponent(hazardType)
+                            return (
+                              <div key={hazardType} className="flex items-center gap-2">
+                                <div className={`w-7 h-7 rounded flex items-center justify-center ${
+                                  maxScore >= 4 ? 'bg-red-100' :
+                                  maxScore === 3 ? 'bg-amber-100' :
+                                  maxScore === 2 ? 'bg-yellow-100' :
+                                  'bg-green-100'
+                                }`}>
+                                  <IconComponent className={`h-4 w-4 ${
+                                    maxScore >= 4 ? 'text-red-600' :
+                                    maxScore === 3 ? 'text-amber-600' :
+                                    maxScore === 2 ? 'text-yellow-600' :
+                                    'text-green-600'
+                                  }`} strokeWidth={1.5} />
+                                </div>
+                                <span className="text-xs font-medium text-navy flex-1">{getHazardName(hazardType)}</span>
+                                <span className={`text-base font-bold ${
+                                  maxScore >= 4 ? 'text-red-600' :
+                                  maxScore === 3 ? 'text-amber-600' :
+                                  maxScore === 2 ? 'text-yellow-600' :
+                                  'text-green-600'
+                                }`}>
+                                  {maxScore}
+                                </span>
+                              </div>
+                            )
+                          })}
+                        </div>
                       </div>
                     </div>
                   )
@@ -245,60 +317,136 @@ export default function ForecastPage() {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-3xl font-semibold text-navy mb-8">Detailed Timeline</h3>
-              <div className="space-y-8">
-                {dailyForecasts.map(({ date, points }) => {
-                  const dateObj = new Date(date)
-                  const dayName = dateObj.toLocaleDateString("en-US", { weekday: "long" })
-                  const dateStr = dateObj.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
-                  return (
-                    <div key={date} className="border-2 border-gray-100 bg-white">
-                      <div className="bg-navy/5 border-b-2 border-gray-100 px-6 py-4">
-                        <div className="text-xl font-semibold text-navy">{dayName}</div>
-                        <div className="text-sm text-gray-600 mt-0.5">{dateStr}</div>
-                      </div>
-                      <div className="p-4 space-y-4">
-                        {points.map((forecast, idx) => {
-                          const time = new Date(forecast.dt_txt)
-                          const timeStr = time.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
-                          return (
-                            <div key={idx} className={`border-2 ${getRiskColor(forecast.summary.highest_risk)} p-5 bg-white hover:shadow-md transition-all`}>
-                              <div className="flex items-center justify-between mb-4">
-                                <div className="text-xl font-semibold text-navy">{timeStr}</div>
-                                <div className="text-right">
-                                  <div className={`text-4xl font-bold bg-gradient-to-br ${getRiskBgColor(forecast.summary.highest_risk)} bg-clip-text text-transparent`}>
-                                    {forecast.summary.highest_risk}
-                                  </div>
-                                  <div className="text-xs text-gray-600 mt-1">{getRiskLabel(forecast.summary.highest_risk)}</div>
-                                </div>
-                              </div>
-                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                {Object.entries(forecast.hazards).map(([type, hazard]: [string, any]) => {
-                                  const IconComponent = getHazardIconComponent(type)
-                                  return (
-                                    <div key={type} className={`p-2 border ${getRiskColor(hazard.score)} bg-white`}>
-                                      <div className="flex items-center justify-between mb-1">
-                                        <div className="w-7 h-7 rounded bg-navy/5 flex items-center justify-center">
-                                          <IconComponent className="h-4 w-4 text-navy-light" strokeWidth={1.5} />
-                                        </div>
-                                        <span className={`text-xl font-bold bg-gradient-to-br ${getRiskBgColor(hazard.score)} bg-clip-text text-transparent`}>
-                                          {hazard.score}
-                                        </span>
-                                      </div>
-                                      <div className="font-medium text-xs text-navy">{getHazardName(type)}</div>
-                                      <div className="text-[10px] text-gray-500 mt-0.5">{hazard.risk_level}</div>
-                                    </div>
-                                  )
-                                })}
-                              </div>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )
-                })}
+            {/* Time Series Chart */}
+            <div className="mb-12">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-3xl font-semibold text-navy">Hazard Risk Timeline</h3>
+                <div className="text-sm text-gray-500 italic">Click legend below to show/hide hazards</div>
+              </div>
+              <div className="bg-white border-2 border-gray-100 p-6">
+                <div className="relative" style={{ height: '600px' }}>
+                  <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet">
+                    {/* Y-axis grid lines and labels */}
+                    {[0, 1, 2, 3, 4, 5].map((level) => {
+                      const y = 540 - (level * 100)
+                      return (
+                        <g key={level}>
+                          <line x1="80" y1={y} x2="1160" y2={y} stroke="#e5e7eb" strokeWidth="1" strokeDasharray={level === 0 ? "0" : "4 2"} />
+                          <text x="60" y={y + 5} fontSize="14" fill="#6b7280" fontWeight="600" textAnchor="end">{level}</text>
+                        </g>
+                      )
+                    })}
+
+                    {/* X-axis - time labels */}
+                    {forecastData.forecasts.map((forecast, idx) => {
+                      if (idx % 3 !== 0) return null // Show every 3rd label
+                      const x = 80 + (idx / (forecastData.forecasts.length - 1)) * 1080
+                      const time = new Date(forecast.dt_txt)
+                      const label = time.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric" })
+                      return (
+                        <text key={idx} x={x} y="570" fontSize="12" fill="#6b7280" textAnchor="middle">
+                          {label}
+                        </text>
+                      )
+                    })}
+
+                    {/* Plot lines for each hazard with offset to reduce overlap */}
+                    {Object.keys(forecastData.forecasts[0]?.hazards || {}).map((hazardType, hIdx) => {
+                      const colors = [
+                        "#ef4444", "#f97316", "#f59e0b", "#84cc16",
+                        "#10b981", "#06b6d4", "#3b82f6", "#8b5cf6"
+                      ]
+                      const color = colors[hIdx % colors.length]
+                      const offset = (hIdx - 3.5) * 1.5 // Slight horizontal offset to separate overlapping lines
+                      const isHidden = hiddenHazards.has(hazardType)
+
+                      return (
+                        <g key={hazardType} opacity={isHidden ? 0.15 : 1}>
+                          {/* Line */}
+                          <path
+                            d={forecastData.forecasts.map((forecast, idx) => {
+                              const x = 80 + (idx / (forecastData.forecasts.length - 1)) * 1080 + offset
+                              const score = forecast.hazards[hazardType]?.score || 0
+                              const y = 540 - (score * 100)
+                              return `${idx === 0 ? 'M' : 'L'} ${x} ${y}`
+                            }).join(' ')}
+                            fill="none"
+                            stroke={color}
+                            strokeWidth="3"
+                            strokeLinejoin="round"
+                            strokeLinecap="round"
+                            opacity="0.85"
+                          />
+                          {/* Data points with hover effect */}
+                          {forecastData.forecasts.map((forecast, idx) => {
+                            const x = 80 + (idx / (forecastData.forecasts.length - 1)) * 1080 + offset
+                            const score = forecast.hazards[hazardType]?.score || 0
+                            const y = 540 - (score * 100)
+                            return (
+                              <g key={idx}>
+                                <circle
+                                  cx={x}
+                                  cy={y}
+                                  r="4"
+                                  fill="white"
+                                  stroke={color}
+                                  strokeWidth="2.5"
+                                  opacity="0.95"
+                                />
+                              </g>
+                            )
+                          })}
+                        </g>
+                      )
+                    })}
+
+                    {/* Y-axis label */}
+                    <text x="25" y="300" fontSize="16" fill="#1f2937" fontWeight="600" textAnchor="middle" transform="rotate(-90, 25, 300)">
+                      Risk Score (1-5)
+                    </text>
+                  </svg>
+                </div>
+
+                {/* Legend */}
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="text-xs text-gray-500">Legend</div>
+                    <div className="text-xs text-gray-400">• Click any hazard to toggle visibility</div>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {Object.keys(forecastData.forecasts[0]?.hazards || {}).map((hazardType, hIdx) => {
+                      const colors = [
+                        "#ef4444", "#f97316", "#f59e0b", "#84cc16",
+                        "#10b981", "#06b6d4", "#3b82f6", "#8b5cf6"
+                      ]
+                      const color = colors[hIdx % colors.length]
+                      const IconComponent = getHazardIconComponent(hazardType)
+                      const isHidden = hiddenHazards.has(hazardType)
+
+                      return (
+                        <button
+                          key={hazardType}
+                          onClick={() => toggleHazard(hazardType)}
+                          className={`flex items-center gap-2 p-2 rounded hover:bg-gray-50 transition-all ${
+                            isHidden ? 'opacity-40' : ''
+                          }`}
+                        >
+                          <div
+                            className="w-3 h-3 rounded-full border-2 border-white"
+                            style={{
+                              backgroundColor: isHidden ? '#d1d5db' : color,
+                              boxShadow: '0 0 0 2px ' + (isHidden ? '#d1d5db' : color)
+                            }}
+                          ></div>
+                          <IconComponent className={`h-4 w-4 ${isHidden ? 'text-gray-400' : 'text-gray-600'}`} strokeWidth={1.5} />
+                          <span className={`text-sm font-medium ${isHidden ? 'text-gray-400 line-through' : 'text-navy'}`}>
+                            {getHazardName(hazardType)}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
