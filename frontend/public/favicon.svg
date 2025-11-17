@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Cloud shape -->
+  <circle cx="35" cy="50" r="18" fill="#E5E7EB"/>
+  <circle cx="55" cy="45" r="22" fill="#E5E7EB"/>
+  <circle cx="70" cy="52" r="16" fill="#E5E7EB"/>
+  <rect x="25" y="50" width="55" height="20" fill="#E5E7EB"/>
+
+  <!-- Lightning bolt -->
+  <path d="M 55 65 L 45 80 L 52 80 L 48 95 L 62 75 L 55 75 Z" fill="#E5E7EB"/>
+</svg>
