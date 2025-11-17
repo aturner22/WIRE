@@ -236,6 +236,7 @@ export default function Home() {
               <ul className="space-y-3 text-[15px] text-gray-600">
                 <li>• Next.js 14 frontend with TypeScript</li>
                 <li>• FastAPI backend with Python 3.11</li>
+                <li>• Github & Vercel for both frontend and stateless backend deployment</li>
               </ul>
             </div>
           </div>
