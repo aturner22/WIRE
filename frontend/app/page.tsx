@@ -64,11 +64,61 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Key Capabilities */}
+       {/* Use Cases */}
       <section className="container mx-auto px-8 py-24 border-t border-gray-100 bg-gradient-to-b from-white to-gray-50/30">
         <div className="mb-16">
           <h2 className="text-4xl font-semibold text-navy mb-4">
-            Key Capabilities
+            Key Use Cases
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl font-light">
+            {/* Comprehensive meteorological risk intelligence designed for institutions with a duty of care */}
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="group bg-white border border-gray-100 p-8 hover:border-navy-light/30 hover:shadow-lg transition-all duration-200">
+            <div className="w-12 h-12 rounded bg-navy/5 flex items-center justify-center mb-6 group-hover:bg-navy-light/10 transition-colors">
+              <Database className="h-6 w-6 text-navy-light" strokeWidth={1.5} />
+            </div>
+            <h3 className="text-xl font-semibold text-navy mb-3">
+              Elderly Care Facilities
+            </h3>
+            <p className="text-gray-600 text-[15px] leading-relaxed">
+              Helping staff assess risks for taking elderly residents off site and how to prepare residents for different weather scenarios (e.g., welfare check frequency, planning excursions, central heating schedules).
+            </p>
+          </div>
+
+          <div className="group bg-white border border-gray-100 p-8 hover:border-navy-light/30 hover:shadow-lg transition-all duration-200">
+            <div className="w-12 h-12 rounded bg-navy/5 flex items-center justify-center mb-6 group-hover:bg-navy-light/10 transition-colors">
+              <Shield className="h-6 w-6 text-navy-light" strokeWidth={1.5} />
+            </div>
+            <h3 className="text-xl font-semibold text-navy mb-3">
+              Schools
+            </h3>
+            <p className="text-gray-600 text-[15px] leading-relaxed">
+              Aiding teachers in deciding whether outdoor activities are appropriate for children and when to take precations (e.g., gritting, suncream, warm clothes).
+            </p>
+          </div>
+
+          <div className="group bg-white border border-gray-100 p-8 hover:border-navy-light/30 hover:shadow-lg transition-all duration-200">
+            <div className="w-12 h-12 rounded bg-navy/5 flex items-center justify-center mb-6 group-hover:bg-navy-light/10 transition-colors">
+              <Globe className="h-6 w-6 text-navy-light" strokeWidth={1.5} />
+            </div>
+            <h3 className="text-xl font-semibold text-navy mb-3">
+              Hospitals and Emergency Departments
+            </h3>
+            <p className="text-gray-600 text-[15px] leading-relaxed">
+              Preparing for surges in A&E visits (asthma attacks, slips and falls, heat exposure) as well as wider disruption to hospital services (e.g., ambulance delays from adverse road conditions).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Capabilities */}
+      <section className="container mx-auto px-8 py-24 border-t border-gray-100 bg-gradient-to-b from-white to-gray-50/30">
+        <div className="mb-16">
+          <h2 className="text-4xl font-semibold text-navy mb-4">
+            Capabilities
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl font-light">
             Comprehensive meteorological risk intelligence designed for institutions with a duty of care
