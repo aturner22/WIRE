@@ -74,7 +74,7 @@ Assesses transport safety from visibility, precipitation, and wind conditions.
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd openweather-health-watch
+cd WIRE
 ```
 
 2. Configure environment variables:
