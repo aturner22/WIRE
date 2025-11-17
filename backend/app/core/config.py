@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     OPENWEATHER_API_KEY: str
     OPENWEATHER_BASE_URL: str = "https://api.openweathermap.org"
 
-    # Security
-    SECRET_KEY: str = "your-secret-key-change-in-production"
+    # Security (not currently used but available for future JWT/session management)
+    SECRET_KEY: Optional[str] = None
 
     # CORS - Allow vercel origins in production, or specific origins in development
     CORS_ORIGINS: list[str] = ["https://wire-delta.vercel.app"] if os.getenv("ENVIRONMENT") == "production" else [

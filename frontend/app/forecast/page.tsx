@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Calendar, MapPin, AlertTriangle, Clock } from "lucide-react"
-import { api } from "@/lib/api"
+import { api, ForecastResponse } from "@/lib/api"
 import {
   getRiskColor,
   getRiskBgColor,
@@ -10,27 +10,6 @@ import {
   getHazardIconComponent,
   getHazardName,
 } from "@/lib/hazard-utils"
-
-interface ForecastPoint {
-  timestamp: number
-  dt_txt: string
-  hazards: Record<string, any>
-  summary: {
-    highest_risk: number
-    average_risk: number
-    hazards_above_moderate: number
-  }
-}
-
-interface ForecastData {
-  location: {
-    latitude: number
-    longitude: number
-    name: string
-  }
-  forecast_hours: number
-  forecasts: ForecastPoint[]
-}
 
 export default function ForecastPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -40,7 +19,7 @@ export default function ForecastPage() {
     lon: number
     name: string
   } | null>(null)
-  const [forecastData, setForecastData] = useState<ForecastData | null>(null)
+  const [forecastData, setForecastData] = useState<ForecastResponse | null>(null)
   const [forecastHours, setForecastHours] = useState<120>(120)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -77,11 +56,7 @@ export default function ForecastPage() {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/hazards/forecast?lat=${lat}&lon=${lon}&name=${name}&hours=${forecastHours}`
-      )
-      if (!response.ok) throw new Error("Failed to fetch forecast")
-      const data = await response.json()
+      const data = await api.getHazardForecast(lat, lon, name, forecastHours)
       setForecastData(data)
     } catch (err: any) {
       setError(err.message || "Failed to fetch forecast data")
@@ -103,7 +78,7 @@ export default function ForecastPage() {
 
   const groupByDay = () => {
     if (!forecastData) return []
-    const days = new Map<string, ForecastPoint[]>()
+    const days = new Map<string, any[]>()
     forecastData.forecasts.forEach(f => {
       const date = f.dt_txt.split(" ")[0]
       if (!days.has(date)) days.set(date, [])
@@ -272,40 +247,51 @@ export default function ForecastPage() {
 
             <div>
               <h3 className="text-3xl font-semibold text-navy mb-8">Detailed Timeline</h3>
-              <div className="space-y-6">
-                {forecastData.forecasts.map((forecast, idx) => {
-                  const time = new Date(forecast.dt_txt)
-                  const timeStr = time.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
-                  const dateStr = time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
+              <div className="space-y-8">
+                {dailyForecasts.map(({ date, points }) => {
+                  const dateObj = new Date(date)
+                  const dayName = dateObj.toLocaleDateString("en-US", { weekday: "long" })
+                  const dateStr = dateObj.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
                   return (
-                    <div key={idx} className={`bg-white border-2 ${getRiskColor(forecast.summary.highest_risk)} p-6 hover:shadow-lg transition-all`}>
-                      <div className="flex items-center justify-between mb-5">
-                        <div>
-                          <div className="text-2xl font-semibold text-navy">{timeStr}</div>
-                          <div className="text-sm text-gray-600 mt-0.5">{dateStr}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className={`text-5xl font-bold bg-gradient-to-br ${getRiskBgColor(forecast.summary.highest_risk)} bg-clip-text text-transparent`}>
-                            {forecast.summary.highest_risk}
-                          </div>
-                          <div className="text-sm text-gray-600 mt-1">{getRiskLabel(forecast.summary.highest_risk)}</div>
-                        </div>
+                    <div key={date} className="border-2 border-gray-100 bg-white">
+                      <div className="bg-navy/5 border-b-2 border-gray-100 px-6 py-4">
+                        <div className="text-xl font-semibold text-navy">{dayName}</div>
+                        <div className="text-sm text-gray-600 mt-0.5">{dateStr}</div>
                       </div>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {Object.entries(forecast.hazards).map(([type, hazard]: [string, any]) => {
-                          const IconComponent = getHazardIconComponent(type)
+                      <div className="p-4 space-y-4">
+                        {points.map((forecast, idx) => {
+                          const time = new Date(forecast.dt_txt)
+                          const timeStr = time.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
                           return (
-                            <div key={type} className={`p-3 border-2 ${getRiskColor(hazard.score)} bg-white`}>
-                              <div className="flex items-center justify-between mb-2">
-                                <div className="w-8 h-8 rounded bg-navy/5 flex items-center justify-center">
-                                  <IconComponent className="h-5 w-5 text-navy-light" strokeWidth={1.5} />
+                            <div key={idx} className={`border-2 ${getRiskColor(forecast.summary.highest_risk)} p-5 bg-white hover:shadow-md transition-all`}>
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="text-xl font-semibold text-navy">{timeStr}</div>
+                                <div className="text-right">
+                                  <div className={`text-4xl font-bold bg-gradient-to-br ${getRiskBgColor(forecast.summary.highest_risk)} bg-clip-text text-transparent`}>
+                                    {forecast.summary.highest_risk}
+                                  </div>
+                                  <div className="text-xs text-gray-600 mt-1">{getRiskLabel(forecast.summary.highest_risk)}</div>
                                 </div>
-                                <span className={`text-2xl font-bold bg-gradient-to-br ${getRiskBgColor(hazard.score)} bg-clip-text text-transparent`}>
-                                  {hazard.score}
-                                </span>
                               </div>
-                              <div className="font-semibold text-sm text-navy">{getHazardName(type)}</div>
-                              <div className="text-xs text-gray-600 mt-0.5">{hazard.risk_level}</div>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                {Object.entries(forecast.hazards).map(([type, hazard]: [string, any]) => {
+                                  const IconComponent = getHazardIconComponent(type)
+                                  return (
+                                    <div key={type} className={`p-2 border ${getRiskColor(hazard.score)} bg-white`}>
+                                      <div className="flex items-center justify-between mb-1">
+                                        <div className="w-7 h-7 rounded bg-navy/5 flex items-center justify-center">
+                                          <IconComponent className="h-4 w-4 text-navy-light" strokeWidth={1.5} />
+                                        </div>
+                                        <span className={`text-xl font-bold bg-gradient-to-br ${getRiskBgColor(hazard.score)} bg-clip-text text-transparent`}>
+                                          {hazard.score}
+                                        </span>
+                                      </div>
+                                      <div className="font-medium text-xs text-navy">{getHazardName(type)}</div>
+                                      <div className="text-[10px] text-gray-500 mt-0.5">{hazard.risk_level}</div>
+                                    </div>
+                                  )
+                                })}
+                              </div>
                             </div>
                           )
                         })}

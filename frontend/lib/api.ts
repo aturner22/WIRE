@@ -1,5 +1,5 @@
 /**
- * SafetyWatch API Client
+ * WIRE API Client
  *
  * Handles all communication with the FastAPI backend
  */
@@ -87,10 +87,31 @@ export interface Methodology {
   citation: Citation
 }
 
+export interface ForecastPoint {
+  timestamp: number
+  dt_txt: string
+  hazards: Record<string, any>
+  summary: {
+    highest_risk: number
+    average_risk: number
+    hazards_above_moderate: number
+  }
+}
+
+export interface ForecastResponse {
+  location: {
+    latitude: number
+    longitude: number
+    name: string
+  }
+  forecast_hours: number
+  forecasts: ForecastPoint[]
+}
+
 /**
  * API Client Class
  */
-class SafetyWatchAPI {
+class WireAPI {
   private client: AxiosInstance
   private baseURL: string
 
@@ -177,6 +198,21 @@ class SafetyWatchAPI {
     return response.data
   }
 
+  /**
+   * Get hazard forecast for a location
+   */
+  async getHazardForecast(
+    lat: number,
+    lon: number,
+    name: string,
+    hours: number = 120
+  ): Promise<ForecastResponse> {
+    const response = await this.client.get('/hazards/forecast', {
+      params: { lat, lon, name, hours },
+    })
+    return response.data
+  }
+
   // ==================== UTILITY ====================
 
   /**
@@ -189,7 +225,7 @@ class SafetyWatchAPI {
 }
 
 // Export singleton instance
-export const api = new SafetyWatchAPI()
+export const api = new WireAPI()
 
 // Export class for custom instances
-export default SafetyWatchAPI
+export default WireAPI

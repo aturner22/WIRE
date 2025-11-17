@@ -4,7 +4,7 @@ Hazard Calculator Service - Orchestrates all hazard modules.
 Fetches weather data and calculates all hazard risk scores.
 """
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from .weather_service import weather_service
 from .hazards.base import HazardResult
 from .hazards.heat_stress import HeatStress
@@ -149,6 +149,14 @@ class HazardCalculator:
         # Fetch forecast data
         forecast_data = await weather_service.get_hourly_forecast(lat, lon, hours)
 
+        # Fetch air quality forecast data
+        try:
+            air_quality_forecast = await weather_service.get_air_quality_forecast(lat, lon)
+            aq_forecast_list = air_quality_forecast.get("list", [])
+        except Exception as e:
+            logger.warning(f"Unable to fetch air quality forecast: {e}. Respiratory hazard will be omitted from forecast.")
+            aq_forecast_list = []
+
         forecast_results = []
 
         # Process each forecast point
@@ -156,18 +164,26 @@ class HazardCalculator:
             try:
                 # Calculate hazards for this forecast point
                 results = {}
+                forecast_timestamp = forecast_point.get("dt")
 
                 for hazard_type, module in self.hazard_modules.items():
                     try:
                         if hazard_type == "respiratory":
-                            # Air quality forecast would need separate API call
-                            # Skip for now or use current AQ data
-                            continue
+                            # Find matching air quality forecast point (closest timestamp)
+                            if aq_forecast_list:
+                                aq_point = self._find_closest_aq_forecast(forecast_timestamp, aq_forecast_list)
+                                if aq_point:
+                                    combined_data = {**forecast_point, "air_quality": aq_point}
+                                    result = module.calculate(combined_data)
+                                    results[hazard_type] = self._format_hazard_result(result)
+                                else:
+                                    logger.debug(f"No matching air quality data for timestamp {forecast_timestamp}")
+                            # If no AQ data available, skip respiratory hazard
                         else:
                             result = module.calculate(forecast_point)
                             results[hazard_type] = self._format_hazard_result(result)
                     except Exception as e:
-                        print(f"Error calculating forecast {hazard_type}: {e}")
+                        logger.error(f"Error calculating forecast {hazard_type}: {e}", exc_info=True)
 
                 summary = self._calculate_summary(results)
 
@@ -179,7 +195,7 @@ class HazardCalculator:
                 })
 
             except Exception as e:
-                print(f"Error processing forecast point: {e}")
+                logger.error(f"Error processing forecast point: {e}", exc_info=True)
                 continue
 
         return forecast_results
@@ -227,6 +243,33 @@ class HazardCalculator:
             "citation": result.citation,
             "confidence": result.confidence,
         }
+
+    def _find_closest_aq_forecast(self, target_timestamp: int, aq_forecast_list: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+        """
+        Find the air quality forecast point closest to the target timestamp.
+
+        Args:
+            target_timestamp: Target timestamp (Unix time)
+            aq_forecast_list: List of air quality forecast data points
+
+        Returns:
+            Closest air quality forecast point, or None if list is empty
+        """
+        if not aq_forecast_list:
+            return None
+
+        closest_point = None
+        min_diff = float('inf')
+
+        for aq_point in aq_forecast_list:
+            aq_timestamp = aq_point.get("dt")
+            if aq_timestamp is not None:
+                diff = abs(aq_timestamp - target_timestamp)
+                if diff < min_diff:
+                    min_diff = diff
+                    closest_point = aq_point
+
+        return closest_point
 
     def _calculate_summary(self, results: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
         """
