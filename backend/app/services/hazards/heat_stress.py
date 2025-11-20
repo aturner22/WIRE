@@ -21,15 +21,13 @@ class HeatStress(BaseHazard):
     description = "Risk of heat-related illness including heat exhaustion and heat stroke"
 
     citation = {
-        "title": "Heat illness during working and preventive considerations from body fluid homeostasis",
-        "authors": "Kamijo, Y., Nose, H.",
-        "year": 2006,
-        "journal": "Industrial Health",
-        "publication": "Volume 44, Issue 3, Pages 345-358",
-        "url": "https://www.jstage.jst.go.jp/article/indhealth/44/3/44_3_345/_article",
-        "doi": "10.2486/indhealth.44.345",
-        "methodology_location": "Section 2-3: Thermoregulatory responses during heat exposure and age-related thermoregulation decline. Discusses heat stress thresholds for vulnerable populations including elderly, with emphasis on temperature-humidity interactions and dehydration risk.",
-        "additional": "Heat Index calculation uses Rothfusz (1990) NWS equation validated by Anderson et al. (2013) 'Methods to calculate the heat index as an exposure metric in environmental health research' Environmental Health Perspectives 121(10):1111-1119, doi:10.1289/ehp.1206273"
+        "title": "The Heat Index Equation (NWS Southern Region Technical Attachment SR 90-23)",
+        "authors": "Rothfusz, L.P.",
+        "year": 1990,
+        "publication": "National Weather Service, NOAA",
+        "url": "https://www.weather.gov/media/ffc/ta_htindx.PDF",
+        "methodology_location": "NOAA/NWS Heat Index categories: Caution 27-32°C (fatigue possible), Extreme Caution 32-39°C (heat cramps/exhaustion possible), Danger 39-51°C (heat cramps/exhaustion likely, heat stroke probable), Extreme Danger 51+°C (heat stroke imminent). Regression equation: HI = -42.379 + 2.04901523*T + 10.14333127*RH - .22475541*T*RH - .00683783*T*T - .05481717*RH*RH + .00122874*T*T*RH + .00085282*T*RH*RH - .00000199*T*T*RH*RH",
+        "additional": "Thresholds calibrated for general population; elderly and medically fragile individuals at higher risk at lower heat index values due to impaired thermoregulation (Kamijo & Nose 2006, doi:10.2486/indhealth.44.345)"
     }
 
     # Risk thresholds in Celsius (Heat Index values)

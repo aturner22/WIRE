@@ -21,15 +21,13 @@ class RespiratoryRisk(BaseHazard):
     description = "Risk of respiratory distress from air pollution including asthma and COPD exacerbation"
 
     citation = {
-        "title": "Long-term Air Pollution Exposure and Cardio-Respiratory Mortality: A Review",
-        "authors": "Hoek, G., Krishnan, R.M., Beelen, R., Peters, A., Ostro, B., Brunekreef, B., Kaufman, J.D.",
-        "year": 2013,
-        "journal": "Environmental Health: A Global Access Science Source",
-        "publication": "Volume 12, Article 43",
-        "url": "https://ehjournal.biomedcentral.com/articles/10.1186/1476-069X-12-43",
-        "doi": "10.1186/1476-069X-12-43",
-        "methodology_location": "Table 1 (page 4): PM2.5 concentration-response relationships; Figure 2 (page 7): Risk estimates for vulnerable populations",
-        "additional": "EPA AQI Technical Assistance Document (EPA-454/B-18-007, 2018) Section 3.2 and WHO Air Quality Guidelines 2021 (ISBN 978-92-4-003422-8) Chapter 4"
+        "title": "Technical Assistance Document for the Reporting of Daily Air Quality - the Air Quality Index (AQI)",
+        "authors": "U.S. Environmental Protection Agency (EPA)",
+        "year": 2018,
+        "publication": "EPA-454/B-18-007",
+        "url": "https://www.airnow.gov/publications/air-quality-index/technical-assistance-document-for-reporting-the-daily-aqi/",
+        "methodology_location": "PM2.5 breakpoints (μg/m³): 0-12.0 (Good), 12.1-35.4 (Moderate), 35.5-55.4 (Unhealthy for Sensitive Groups), 55.5-150.4 (Unhealthy), 150.5-250.4 (Very Unhealthy), 250.5+ (Hazardous). PM10: 0-54 (Good), 55-154 (Moderate), 155-254 (USG), 255-354 (Unhealthy), 355-424 (Very Unhealthy), 425+ (Hazardous).",
+        "additional": "Health impacts on vulnerable populations documented in Hoek et al. (2013) 'Long-term air pollution exposure and cardio-respiratory mortality' Environmental Health 12:43, doi:10.1186/1476-069X-12-43"
     }
 
     # AQI breakpoints for PM2.5 (μg/m³)

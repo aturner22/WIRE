@@ -21,15 +21,15 @@ class ColdExposure(BaseHazard):
     description = "Risk of hypothermia, frostbite, and cold-related illness"
 
     citation = {
-        "title": "Cold exposure and winter mortality from ischaemic heart disease, cerebrovascular disease, respiratory disease, and all causes in warm and cold regions of Europe",
-        "authors": "The Eurowinter Group (Keatinge, W.R., Donaldson, G.C., et al.)",
-        "year": 1997,
-        "journal": "The Lancet",
-        "publication": "Volume 349, Issue 9062, Pages 1341-1346",
-        "url": "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(96)12338-2/fulltext",
-        "doi": "10.1016/S0140-6736(96)12338-2",
-        "methodology_location": "Pages 1343-1344: Table 2 shows temperature-mortality relationships; Figure 3 demonstrates wind chill effects on vulnerable populations",
-        "additional": "Wind chill calculation from Osczevski & Bluestein (2005) Bulletin of the American Meteorological Society 86(10):1453-1458, doi:10.1175/BAMS-86-10-1453"
+        "title": "Wind Chill: The 'New' Wind Chill Equivalent Temperature Chart",
+        "authors": "Osczevski, R., Bluestein, M.",
+        "year": 2005,
+        "journal": "Bulletin of the American Meteorological Society",
+        "publication": "Volume 86, Issue 10, Pages 1453-1458",
+        "url": "https://journals.ametsoc.org/view/journals/bams/86/10/bams-86-10-1453.xml",
+        "doi": "10.1175/BAMS-86-10-1453",
+        "methodology_location": "Environment Canada/US NWS Wind Chill formula (2001): WC = 13.12 + 0.6215T - 11.37V^0.16 + 0.3965TV^0.16. Frostbite risk: -10 to -27°C (10-30 min), -28 to -39°C (5-10 min), below -40°C (<5 min). Formula applies when T≤10°C and V≥4.8 km/h.",
+        "additional": "Elderly vulnerability to cold documented in Eurowinter Group (1997) 'Cold exposure and winter mortality' The Lancet 349(9062):1341-1346, doi:10.1016/S0140-6736(96)12338-2"
     }
 
     # Risk thresholds in Celsius (Wind Chill values)

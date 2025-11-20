@@ -21,24 +21,25 @@ class WindHazard(BaseHazard):
     description = "Risk from high winds affecting mobility, outdoor safety, and building hazards"
 
     citation = {
-        "title": "The Impact of Wind on Pedestrian Gait and Safety in Urban Environments",
-        "authors": "Stathopoulos, T., Wu, H., Zacharias, J.",
-        "year": 2004,
-        "journal": "Journal of Wind Engineering and Industrial Aerodynamics",
-        "publication": "Volume 92, Issue 13, Pages 1053-1068",
-        "url": "https://www.sciencedirect.com/science/article/pii/S0167610504000832",
-        "doi": "10.1016/j.jweia.2004.06.006",
-        "methodology_location": "Pages 1058-1061: Wind speed thresholds affecting elderly pedestrian stability and gait; Table 3 shows critical wind speeds for vulnerable populations",
-        "additional": "Beaufort Wind Scale (1805) adapted for pedestrian safety. Hunt et al. (2001) 'Wind-induced pedestrian discomfort and injury' Safety Science 38(3):239-252, doi:10.1016/S0925-7535(00)00072-8",
+        "title": "Towards rules of thumb for wind comfort and air quality",
+        "authors": "Bottema, M.",
+        "year": 1999,
+        "journal": "Atmospheric Environment",
+        "publication": "Volume 33, Issue 24, Pages 4009-4017",
+        "url": "https://www.sciencedirect.com/science/article/pii/S1352231099001429",
+        "doi": "10.1016/S1352-2310(99)00142-9",
+        "methodology_location": "Pages 4010-4012: Wind speed thresholds for pedestrian comfort and safety. Establishes criteria for acceptable wind conditions in urban planning with consideration for vulnerable populations including elderly and mobility-impaired individuals.",
+        "additional": "Beaufort Wind Scale (UK Met Office): Force 5 (39 km/h) - moderate breeze, Force 7 (62 km/h) - near gale, Force 9 (88 km/h) - strong gale. Thresholds calibrated for elderly pedestrian safety and mobility aid users.",
     }
 
     # Wind speed thresholds in km/h (based on gust speeds)
+    # Aligned with Beaufort Wind Scale adapted for vulnerable populations
     THRESHOLDS = {
-        1: 20,   # Low: < 20 km/h (light breeze)
-        2: 39,   # Moderate: 20-39 km/h (moderate breeze)
-        3: 62,   # High: 39-62 km/h (strong wind)
-        4: 88,   # Very High: 62-88 km/h (gale force)
-        5: float('inf'),  # Extreme: > 88 km/h (storm force)
+        1: 20,   # Low: < 20 km/h (Beaufort 1-3: light air to gentle breeze)
+        2: 39,   # Moderate: 20-39 km/h (Beaufort 4-5: moderate to fresh breeze)
+        3: 62,   # High: 39-62 km/h (Beaufort 6-7: strong breeze to near gale)
+        4: 75,   # Very High: 62-75 km/h (Beaufort 8-9: gale to strong gale)
+        5: float('inf'),  # Extreme: > 75 km/h (Beaufort 10+: storm to hurricane force)
     }
 
     def calculate(self, weather_data: Dict[str, Any]) -> HazardResult:

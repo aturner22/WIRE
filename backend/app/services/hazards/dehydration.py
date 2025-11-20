@@ -21,15 +21,13 @@ class DehydrationRisk(BaseHazard):
     description = "Risk of dehydration in vulnerable populations, especially elderly residents"
 
     citation = {
-        "title": "Oral hydration in older adults: greater awareness is needed in preventing, recognizing, and treating dehydration",
-        "authors": "Mentes, J.",
-        "year": 2006,
-        "journal": "American Journal of Nursing",
-        "publication": "Volume 106, Issue 6, Pages 40-49",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/16728843/",
-        "doi": "10.1097/00000446-200606000-00023",
-        "methodology_location": "Elderly dehydration risk factors including reduced thirst sensation, medications, and physiological changes. Warm weather and higher temperatures significantly increase risk. Emphasizes need for proactive hydration monitoring in care settings.",
-        "additional": "WHO (2011) 'Public Health Advice on Preventing Health Effects of Heat' - identifies elderly as particularly vulnerable during heat due to slow physiological adaptation, multiple comorbidities, and limited behavioral response to thermal stress. Available: https://www.who.int/europe/publications/i/item/WHO-EURO-2011-2510-42266-58691",
+        "title": "The Heat Index Equation (NWS Southern Region Technical Attachment SR 90-23) - Adapted for Dehydration Risk",
+        "authors": "Rothfusz, L.P. (NOAA methodology)",
+        "year": 1990,
+        "publication": "National Weather Service, NOAA",
+        "url": "https://www.weather.gov/media/ffc/ta_htindx.PDF",
+        "methodology_location": "Dehydration risk assessment based on NOAA Heat Index methodology with elderly vulnerability multiplier (1.5x). Temperature thresholds: <25°C (low risk), 25-28°C (moderate - increased fluid needs), 28-32°C (high - frequent hydration required), 32-36°C (very high - continuous monitoring), >36°C (extreme - medical concern). Elderly at elevated risk due to reduced thirst sensation and impaired thermoregulation.",
+        "additional": "Elderly dehydration vulnerability documented in Mentes (2006) 'Oral hydration in older adults' American Journal of Nursing 106(6):40-49, doi:10.1097/00000446-200606000-00023. WHO (2011) Public Health Advice on Preventing Health Effects of Heat confirms elderly as highly vulnerable to heat-related dehydration."
     }
 
     # Temperature thresholds for dehydration risk (Celsius)
