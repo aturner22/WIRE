@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Calendar, MapPin, AlertTriangle, Clock } from "lucide-react"
+import { Calendar, MapPin, AlertTriangle, Clock, Download } from "lucide-react"
 import { api, ForecastResponse } from "@/lib/api"
 import {
   getRiskColor,
@@ -87,6 +87,10 @@ export default function ForecastPage() {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") handleSearch()
+  }
+
+  const handlePrint = () => {
+    window.print()
   }
 
   const groupByDay = () => {
@@ -216,6 +220,31 @@ export default function ForecastPage() {
 
         {!loading && forecastData && (
           <div className="max-w-7xl mx-auto">
+            {/* Forecast Controls */}
+            <div className="mb-8 pb-6 border-b border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <label className="text-sm font-medium text-gray-700">Forecast Range:</label>
+                  <select
+                    value={forecastHours}
+                    onChange={(e) => setForecastHours(Number(e.target.value) as 120)}
+                    className="px-4 py-2 border border-gray-200 focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none text-sm transition-all"
+                  >
+                    <option value={24}>24 Hours (1 Day)</option>
+                    <option value={72}>72 Hours (3 Days)</option>
+                    <option value={120}>120 Hours (5 Days)</option>
+                  </select>
+                </div>
+                <button
+                  onClick={handlePrint}
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-navy text-white hover:bg-navy-secondary transition-all font-medium text-sm"
+                >
+                  <Download className="h-4 w-4" />
+                  Print / Download
+                </button>
+              </div>
+            </div>
+
             {/* Daily Peak Hazards */}
             <div className="mb-12">
               <div className="flex items-center justify-between mb-8">

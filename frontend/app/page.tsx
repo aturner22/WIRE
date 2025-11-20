@@ -51,7 +51,7 @@ export default function Home() {
               href="/dashboard"
               className="inline-flex items-center px-8 py-4 bg-navy text-white text-base font-medium hover:bg-navy-secondary transition-all hover:shadow-lg hover:shadow-navy/20"
             >
-              Access Dashboard
+              Try Live Demo
               <ArrowRight className="ml-2 h-5 w-5" />
             </a>
             <a
@@ -71,7 +71,7 @@ export default function Home() {
             Key Use Cases
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl font-light">
-            {/* Comprehensive meteorological risk intelligence designed for institutions with a duty of care */}
+            Comprehensive meteorological risk intelligence designed for institutions with a duty of care
           </p>
         </div>
 
@@ -96,7 +96,7 @@ export default function Home() {
               Schools
             </h3>
             <p className="text-gray-600 text-[15px] leading-relaxed">
-              Aiding teachers in deciding whether outdoor activities are appropriate for children and when to take precations (e.g., gritting, suncream, warm clothes).
+              Aiding teachers in deciding whether outdoor activities are appropriate for children and when to take precautions (e.g., gritting, suncream, warm clothes).
             </p>
           </div>
 
@@ -110,6 +110,75 @@ export default function Home() {
             <p className="text-gray-600 text-[15px] leading-relaxed">
               Preparing for surges in A&E visits (asthma attacks, slips and falls, heat exposure) as well as wider disruption to hospital services (e.g., ambulance delays from adverse road conditions).
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="container mx-auto px-8 py-24 border-t border-gray-100">
+        <div className="mb-16 text-center">
+          <h2 className="text-4xl font-semibold text-navy mb-4">
+            How It Works
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto font-light">
+            Three simple steps to evidence-based hazard assessment
+          </p>
+        </div>
+
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <div className="relative">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-accent text-white flex items-center justify-center text-2xl font-bold mb-6">
+                  1
+                </div>
+                <h3 className="text-xl font-semibold text-navy mb-3">
+                  Search Location
+                </h3>
+                <p className="text-gray-600 text-[15px] leading-relaxed">
+                  Enter your facility&apos;s location using the global search. Supports cities, postcodes, and coordinates worldwide.
+                </p>
+              </div>
+              {/* Arrow */}
+              <div className="hidden md:block absolute top-8 right-0 transform translate-x-1/2">
+                <ArrowRight className="h-6 w-6 text-gray-300" />
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-navy-light text-white flex items-center justify-center text-2xl font-bold mb-6">
+                  2
+                </div>
+                <h3 className="text-xl font-semibold text-navy mb-3">
+                  View Risk Assessment
+                </h3>
+                <p className="text-gray-600 text-[15px] leading-relaxed">
+                  Instantly see current conditions across all eight hazard modules with 1-5 risk scores and specific recommendations.
+                </p>
+              </div>
+              {/* Arrow */}
+              <div className="hidden md:block absolute top-8 right-0 transform translate-x-1/2">
+                <ArrowRight className="h-6 w-6 text-gray-300" />
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-accent text-white flex items-center justify-center text-2xl font-bold mb-6">
+                  3
+                </div>
+                <h3 className="text-xl font-semibold text-navy mb-3">
+                  Plan Ahead
+                </h3>
+                <p className="text-gray-600 text-[15px] leading-relaxed">
+                  Check the 5-day forecast with 3-hour granularity to schedule activities, plan staffing, and ensure resident safety.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

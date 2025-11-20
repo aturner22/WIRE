@@ -231,8 +231,11 @@ export default function DashboardPage() {
             <div className="mb-8">
               <div className="flex items-baseline justify-between mb-6">
                 <h2 className="text-3xl font-semibold text-navy">Current Hazard Assessment</h2>
-                <div className="text-sm text-gray-500 font-light">
-                  Updated {formatTimestamp(hazardData.timestamp)}
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded">
+                  <RefreshCw className="h-4 w-4 text-accent" />
+                  <span className="text-sm text-navy font-medium">
+                    Updated {formatTimestamp(hazardData.timestamp)}
+                  </span>
                 </div>
               </div>
             </div>
