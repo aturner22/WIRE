@@ -21,13 +21,15 @@ class DehydrationRisk(BaseHazard):
     description = "Risk of dehydration in vulnerable populations, especially elderly residents"
 
     citation = {
-        "title": "Public Health Advice on Preventing Health Effects of Heat: New and Updated Information for Different Audiences",
-        "authors": "World Health Organization (WHO)",
-        "year": 2011,
-        "publication": "WHO Heat-Health Action Plan Guidance",
-        "url": "https://www.who.int/publications/i/item/9789289002820",
-        "methodology_location": "Chapter 3: Risk assessment for vulnerable populations including elderly - temperature thresholds (>25°C moderate risk, >32°C high risk), humidity factors affecting dehydration, and heat index guidance for care settings",
-        "additional": "Mentes (2006) 'Oral hydration in older adults: greater awareness is needed in preventing, recognizing, and treating dehydration' American Journal of Nursing 106(6):40-49, doi:10.1097/00000446-200606000-00023",
+        "title": "Oral hydration in older adults: greater awareness is needed in preventing, recognizing, and treating dehydration",
+        "authors": "Mentes, J.",
+        "year": 2006,
+        "journal": "American Journal of Nursing",
+        "publication": "Volume 106, Issue 6, Pages 40-49",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16728843/",
+        "doi": "10.1097/00000446-200606000-00023",
+        "methodology_location": "Elderly dehydration risk factors including reduced thirst sensation, medications, and physiological changes. Warm weather and higher temperatures significantly increase risk. Emphasizes need for proactive hydration monitoring in care settings.",
+        "additional": "WHO (2011) 'Public Health Advice on Preventing Health Effects of Heat' - identifies elderly as particularly vulnerable during heat due to slow physiological adaptation, multiple comorbidities, and limited behavioral response to thermal stress. Available: https://www.who.int/europe/publications/i/item/WHO-EURO-2011-2510-42266-58691",
     }
 
     # Temperature thresholds for dehydration risk (Celsius)

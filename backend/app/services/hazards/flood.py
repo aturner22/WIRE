@@ -20,15 +20,15 @@ class FloodRisk(BaseHazard):
     description = "Risk of flooding affecting facility access and operations"
 
     citation = {
-        "title": "Rainfall intensity–duration thresholds for the initiation of urban drainage flash floods",
-        "authors": "Versini, P.A., Gaume, E., Andrieu, H.",
-        "year": 2010,
-        "journal": "Journal of Hydrology",
-        "publication": "Volume 394, Issues 3-4, Pages 421-429",
-        "url": "https://www.sciencedirect.com/science/article/pii/S0022169410005445",
-        "doi": "10.1016/j.jhydrol.2010.10.005",
-        "methodology_location": "Pages 424-426: Rainfall intensity-duration thresholds for urban flash flooding; Figure 4 and Table 2 show critical precipitation rates for different accumulation periods",
-        "additional": "Jonkman & Kelman (2005) 'An analysis of the causes and circumstances of flood disaster deaths' Disasters 29(1):75-97, doi:10.1111/j.0361-3666.2005.00275.x for vulnerability assessment",
+        "title": "Critical Rainfall Thresholds as a Tool for Urban Flood Identification in Attica Region, Greece",
+        "authors": "Georganta, C., Feloni, E., Nastos, P., Baltas, E.",
+        "year": 2022,
+        "journal": "Atmosphere",
+        "publication": "Volume 13, Issue 5, Article 698",
+        "url": "https://www.mdpi.com/2073-4433/13/5/698",
+        "doi": "10.3390/atmos13050698",
+        "methodology_location": "Section 3: Analysis of rainfall intensity thresholds for urban flooding. Study identifies thresholds of 10-50mm/hr for various flood severities, with extreme events exceeding 50mm/hr. Table 2 presents critical intensity-duration combinations.",
+        "additional": "Jonkman & Kelman (2005) 'An analysis of the causes and circumstances of flood disaster deaths' Disasters 29(1):75-97, doi:10.1111/j.0361-3666.2005.00275.x - Analysis of flood fatalities showing two-thirds of deaths occur through drowning, with vulnerable populations at highest risk.",
     }
 
     # Precipitation rate thresholds (mm/hour)

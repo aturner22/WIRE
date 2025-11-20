@@ -21,15 +21,15 @@ class HeatStress(BaseHazard):
     description = "Risk of heat-related illness including heat exhaustion and heat stroke"
 
     citation = {
-        "title": "Methods to calculate the heat index as an exposure metric in environmental health research",
-        "authors": "Anderson, G.B., Bell, M.L., Peng, R.D.",
-        "year": 2013,
-        "journal": "Environmental Health Perspectives",
-        "publication": "Volume 121, Issue 10, Pages 1111-1119",
-        "url": "https://ehp.niehs.nih.gov/doi/10.1289/ehp.1206273",
-        "doi": "10.1289/ehp.1206273",
-        "methodology_location": "Pages 1112-1114: Comparison of 21 heat index algorithms; Table 1 validates Rothfusz (1990) NWS equation as the standard method for environmental health research with humidity and temperature adjustments",
-        "additional": "Primary methodology: Rothfusz LP (1990) 'The Heat Index Equation' NWS Technical Attachment SR 90-23. Theoretical basis: Steadman RG (1979) 'The assessment of sultriness' J Appl Meteorol 18(7):861-873"
+        "title": "Heat illness during working and preventive considerations from body fluid homeostasis",
+        "authors": "Kamijo, Y., Nose, H.",
+        "year": 2006,
+        "journal": "Industrial Health",
+        "publication": "Volume 44, Issue 3, Pages 345-358",
+        "url": "https://www.jstage.jst.go.jp/article/indhealth/44/3/44_3_345/_article",
+        "doi": "10.2486/indhealth.44.345",
+        "methodology_location": "Section 2-3: Thermoregulatory responses during heat exposure and age-related thermoregulation decline. Discusses heat stress thresholds for vulnerable populations including elderly, with emphasis on temperature-humidity interactions and dehydration risk.",
+        "additional": "Heat Index calculation uses Rothfusz (1990) NWS equation validated by Anderson et al. (2013) 'Methods to calculate the heat index as an exposure metric in environmental health research' Environmental Health Perspectives 121(10):1111-1119, doi:10.1289/ehp.1206273"
     }
 
     # Risk thresholds in Celsius (Heat Index values)

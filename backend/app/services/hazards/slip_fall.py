@@ -21,15 +21,15 @@ class SlipFallRisk(BaseHazard):
     description = "Risk of slips, trips, and falls due to ice, frost, or wet surfaces"
 
     citation = {
-        "title": "Weather-Related Slip and Fall Accidents in Older Adults: Evidence from a Hospital Emergency Department",
-        "authors": "Gao, C., Abeysekera, J., Hirvonen, M., Aschan, C.",
+        "title": "A systems perspective of slip and fall accidents on icy and snowy surfaces",
+        "authors": "Gao, C., Abeysekera, J., Hirvonen, M., Grönqvist, R.",
         "year": 2004,
         "journal": "Ergonomics",
-        "publication": "Volume 47, Issue 13, Pages 1417-1430",
-        "url": "https://www.tandfonline.com/doi/abs/10.1080/00140130410001670066",
-        "doi": "10.1080/00140130410001670066",
-        "methodology_location": "Pages 1420-1422: Correlation between surface temperature, precipitation and fall incidents in elderly; Table 3 shows risk factors by temperature ranges",
-        "additional": "Paterson et al. (2019) 'Risk factors for falls in older people' Age and Ageing 48(1):59-64, doi:10.1093/ageing/afy144"
+        "publication": "Volume 47, Issue 5, Pages 573-598",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15204304/",
+        "doi": "10.1080/00140130410001658718",
+        "methodology_location": "Section 3.1-3.3: Environmental factors affecting slip risk. Ice is most slippery near melting point (-2°C to +2°C) due to pressure melting creating water film. Elderly populations show 3.5 injuries per 1000 per year from ice/snow falls, with highest rates in those aged 65+.",
+        "additional": "Snow on ground increases slip risk more than 3x compared to no-snow conditions. Two-thirds of women 50+ experience fractures from ice/snow falls."
     }
 
     def calculate(self, weather_data: Dict[str, Any]) -> HazardResult:
@@ -54,14 +54,13 @@ class SlipFallRisk(BaseHazard):
 
         # Weather description
         weather_main = self.extract_nested(weather_data, "weather.0.main", "Clear")
-        weather_desc = self.extract_nested(weather_data, "weather.0.description", "")
 
         if temp is None:
             raise ValueError(f"Missing temperature data for {self.name}")
 
         # Calculate surface condition
         surface_condition = self._assess_surface_condition(
-            temp, feels_like, humidity, rain_1h, snow_1h, clouds, weather_main
+            temp, humidity, rain_1h, snow_1h, weather_main
         )
 
         # Calculate risk score
@@ -100,18 +99,16 @@ class SlipFallRisk(BaseHazard):
             confidence=0.88,  # Moderate confidence due to surface estimation
         )
 
-    def _assess_surface_condition(self, temp: float, feels_like: float, humidity: float,
-                                   rain: float, snow: float, clouds: int, weather: str) -> Dict[str, Any]:
+    def _assess_surface_condition(self, temp: float, humidity: float,
+                                   rain: float, snow: float, weather: str) -> Dict[str, Any]:
         """
         Assess surface conditions based on weather parameters.
 
         Args:
             temp: Air temperature
-            feels_like: Apparent temperature
             humidity: Relative humidity
             rain: Rain in last hour
             snow: Snow in last hour
-            clouds: Cloud coverage percentage
             weather: Weather condition
 
         Returns:
@@ -225,7 +222,6 @@ class SlipFallRisk(BaseHazard):
         Returns:
             List of recommendation strings
         """
-        condition = surface_condition["condition"]
         recommendations = []
 
         if score == 1:
