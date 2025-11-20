@@ -48,7 +48,7 @@ The next steps for this project may be:
 ## Documentation 
 
 Complete documentation is available at
-- The README in the GitHub repository: https://github.com/ashleyturner/WIRE
+- The README in the GitHub repository: https://github.com/aturner22/WIRE
 - The methodology section of the live application: https://wire-delta.vercel.app/
 
 The most important parts of the documentation are: 
